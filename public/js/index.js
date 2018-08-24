@@ -17,7 +17,7 @@ socket.on("newMessage", function(message){
 
 socket.on("newLocationMessage", function(message){
     const li = $("<li></li>");
-    const a = $(<a target="_blank">My Current Location</a>);
+    const a = $("<a target='_blank'>My Current Location</a>");
     li.text(`${message.from}: `);
     a.attr("href",message.url);
     li.append(a);
@@ -38,11 +38,12 @@ $("#message-form").on("submit",function(e){
         from:"User",
         text: $("[name=message]").val()
     },function (){
-
+        messageTextBox.val("");
     });
 });
 
 const locationButton = $("#send-location");
+const messageTextBox = $("[name=message]");
 locationButton.on("click", function(){
    
     if (!navigator.geolocation){
