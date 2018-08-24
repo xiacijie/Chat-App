@@ -6,7 +6,7 @@ const socketIO = require("socket.io");
 const publicPath = path.join(__dirname  ,"../public");
 
 const port = process.env.PORT || 3000;
-const {generateMessage} = require("./utils/message");
+const {generateMessage,generateLocationMessage} = require("./utils/message");
 const app = express();
 const server = http.createServer(app);
 
@@ -25,6 +25,9 @@ io.on("connection", (socket)=>{
         console.log("User was disconnected!");
     });
 
+    socket.on("createLocationMessage",(coords) =>{
+        io.emit("newLocationMessage",generateLocationMessage("Admin", `${coords.latitude},${coords.longitude}`));
+    });
     socket.on("createMessage", (newMessage,callback)=>{
         console.log("createMessage from client",newMessage);
 
