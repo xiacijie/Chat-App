@@ -15,17 +15,41 @@ const io = socketIO(server);
 io.on("connection", (socket)=>{
     console.log("New uer connected");
 
+    // welcome from admin when a user connects
+    socket.emit("newMessage",{
+        from:"admin",
+        text:"welcome to the chat app"
+    });
+    //broadcast the welcome info
+
+    socket.broadcast.emit("newMessage",{
+        from:"Admin",
+        text:"New user joined",
+        createdAt: new Date().getTime()
+    });
+    
     socket.on("disconnect",()=>{
         console.log("User was disconnected!");
     });
 
     socket.on("createMessage", (newMessage)=>{
         console.log("createMessage from client",newMessage);
+
+        
         io.emit("newMessage",{
             from: newMessage.from,
             text:newMessage.text,
-            createAt: new Date().getTime()
+            createdAt: new Date().getTime()
         });
+
+        //send to other people excludes me
+        // socket.broadcast.emit("newMessage",
+        //     {
+        //         from:newMessage.from,
+        //         text: newMessage.text,
+        //         createdAt: new Date().getTime()
+        //     }
+        // );
     });
 
   
