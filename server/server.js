@@ -19,7 +19,7 @@ io.on("connection", (socket)=>{
     socket.emit("newMessage",generateMessage("Admin","welcome to the chat app"));
     //broadcast the welcome info
 
-    socket.broadcast.emit("newMessage",generateMessage("Amdmin","new user joined"));
+    socket.broadcast.emit("newMessage",generateMessage("Admin","new user joined"));
 
     socket.on("disconnect",()=>{
         console.log("User was disconnected!");
