@@ -9,14 +9,5 @@
         <p>Welcome</p>
     </body>
     <script src="socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        socket.on("connect", ()=>{
-            console.log("Connected to server");
-        });
-
-        socket.on("disconnct", ()=>{
-            console.log("Disconncted from server");
-        })
-    </script>
+    <script src="js/index.js"></script>
 </html>

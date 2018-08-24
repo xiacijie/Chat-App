@@ -18,6 +18,15 @@ io.on("connection", (socket)=>{
     socket.on("disconnect",()=>{
         console.log("User was disconnected!");
     });
+
+    socket.on("createMessage", (newMessage)=>{
+        console.log("createMessage from client",newMessage);
+    });
+
+    socket.emit("newMessage",{
+        from:"jack@ualberta.ca",
+        text:"Hey what is going on?"
+    });
 });
 
 
