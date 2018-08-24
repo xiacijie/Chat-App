@@ -10,6 +10,9 @@ socket.on("disconnct", function(){
 
 socket.on("newMessage", function(message){
     console.log("new messgae from server",message);
+    const li = $("<li></li>");
+    li.text(`${message.from} : ${message.text}`);
+    $("#messages").append(li);
 });
 
 socket.emit("createMessage",{
@@ -17,4 +20,16 @@ socket.emit("createMessage",{
     text: "HI"
 },function(info){
     console.log("got it",info);
+});
+
+
+$("#message-form").on("submit",function(e){
+    e.preventDefault();
+   
+    socket.emit("createMessage",{
+        from:"User",
+        text: $("[name=message]").val()
+    },function (){
+
+    });
 });
