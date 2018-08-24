@@ -25,12 +25,12 @@ io.on("connection", (socket)=>{
         console.log("User was disconnected!");
     });
 
-    socket.on("createMessage", (newMessage)=>{
+    socket.on("createMessage", (newMessage,callback)=>{
         console.log("createMessage from client",newMessage);
 
         
         io.emit("newMessage",generateMessage(newMessage.from, newMessage.text));
-
+        callback("fuck");
         //send to other people excludes me
         // socket.broadcast.emit("newMessage",
         //     {
