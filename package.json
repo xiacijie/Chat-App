@@ -4,15 +4,15 @@
   "description": "A real time chatting app",
   "main": "index.js",
   "scripts": {
-    "start":"node server/server.js",
+    "start": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xiacijie/Chat-App.git"
   },
-  "engines":{
-    "node":"6.2.2"
+  "engines": {
+    "node": "6.2.2"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/xiacijie/Chat-App#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "socket.io": "^1.4.8"
   }
 }
