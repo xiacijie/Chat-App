@@ -11,6 +11,8 @@ const app = express();
 const server = http.createServer(app);
 const {isRealString} = require('./utils/validation');
 const io = socketIO(server);
+const {Users} = require("./utils/users");
+const users = new Users();
 
 io.on("connection", (socket)=>{
     // console.log("New uer connected");
@@ -27,9 +29,12 @@ io.on("connection", (socket)=>{
         }
         
         socket.join(params.room);
+        users.removeUser(socket.id);
+        users.addUser(socket.id, params.name, params.room);
         socket.emit("newMessage", generateMessage("Admin","Welcome to the chat app"));
         socket.broadcast.to(params.room).emit("newMessage",generateMessage("Admin", `${params.name} has joined`));
 
+        io.to(params.room).emit("updateUserList",users.getUserList(params.room));
 
         callback();
     });
@@ -40,6 +45,16 @@ io.on("connection", (socket)=>{
     socket.on("createLocationMessage",(coords) =>{
         io.emit("newLocationMessage",generateLocationMessage("Admin", `${coords.latitude},${coords.longitude}`));
     });
+
+    socket.on("disconnect", ()=>{
+        const user = users.removeUser(socket.id);
+
+        if (user){
+            io.to(user.room).emit("updateUserList",users.getUserList(user.room));
+            io.to(user.room).emit("newMessage", generateMessage("Admin", `${user.name} has left`));
+        }
+    });
+
     socket.on("createMessage", (newMessage,callback)=>{
         console.log("createMessage from client",newMessage);
 

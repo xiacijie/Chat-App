@@ -1,6 +1,7 @@
 class Users{
     constructor(){
-        this.user = [];
+        this.users = [];
+       
     }
 
     addUser(id, name, room){
@@ -10,12 +11,18 @@ class Users{
     }
 
     removeUser (id){
+        const user = this.getUser(id);
 
+        if (user) {
+            this.users = this.users.filter((user) => user.id !== id);
+
+        }
+        return user;
     }
 
 
     getUser (id) {
-
+        return this.users.filter((user) => user.id == id)[0];
     }
 
     getUserList (room){
@@ -32,4 +39,4 @@ class Users{
 }
 
 
-export  {User};
+module.exports = {Users}
