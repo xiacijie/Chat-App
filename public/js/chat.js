@@ -50,6 +50,7 @@ socket.on("newMessage", function(message){
         from: message.from,
         createdAt: formattedTime
     });
+    $("[name=message]").val("") ;
     $("#messages").append(html);
     scrollToBottom();
     // console.log("new messgae from server",message);
@@ -68,6 +69,7 @@ socket.on("newLocationMessage", function(message){
     });
 
     $("messages").append(html);
+   
     scrollToBottom();
     // var li = $("<li></li>");
     // var a = $("<a target='_blank'>My Current Location</a>");
