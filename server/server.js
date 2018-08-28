@@ -20,8 +20,7 @@ io.on("connection", (socket)=>{
     // // welcome from admin when a user connects
     // socket.emit("newMessage",generateMessage("Admin","welcome to the chat app"));
     // //broadcast the welcome info
-
-    socket.broadcast.emit("newMessage",generateMessage("Admin","new user joined"));
+ 
 
     socket.on("join", (params, callback) =>{
         if (!isRealString(params.name) || !isRealString(params.room)){
@@ -43,7 +42,9 @@ io.on("connection", (socket)=>{
     });
 
     socket.on("createLocationMessage",(coords) =>{
-        io.emit("newLocationMessage",generateLocationMessage("Admin", `${coords.latitude},${coords.longitude}`));
+        const user = users.getUser(socket.id);
+
+        io.to(user.room).emit("newLocationMessage",generateLocationMessage(user.name, `${coords.latitude},${coords.longitude}`));
     });
 
     socket.on("disconnect", ()=>{
@@ -56,19 +57,12 @@ io.on("connection", (socket)=>{
     });
 
     socket.on("createMessage", (newMessage,callback)=>{
-        console.log("createMessage from client",newMessage);
+        const user = users.getUser(socket.id);
+        if (user && isRealString(newMessage.text)) {
+            io.to(user.room).emit("newMessage",generateMessage(user.name, newMessage.text));
+        }
 
-        
-        io.emit("newMessage",generateMessage(newMessage.from, newMessage.text));
-        callback("fuck");
-        //send to other people excludes me
-        // socket.broadcast.emit("newMessage",
-        //     {
-        //         from:newMessage.from,
-        //         text: newMessage.text,
-        //         createdAt: new Date().getTime()
-        //     }
-        // );
+    
     });
 
   
