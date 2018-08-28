@@ -58,7 +58,8 @@
     border-radius: 5px;
     padding: 0px 20px;
     margin: 20px;
-    width: 230px;
+    width: 30%;
+    min-width: 300px;
   }
   
   .form-field {
