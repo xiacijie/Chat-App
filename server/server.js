@@ -9,18 +9,30 @@ const port = process.env.PORT || 3000;
 const {generateMessage,generateLocationMessage} = require("./utils/message");
 const app = express();
 const server = http.createServer(app);
-
+const {isRealString} = require('./utils/validation');
 const io = socketIO(server);
 
 io.on("connection", (socket)=>{
-    console.log("New uer connected");
+    // console.log("New uer connected");
 
-    // welcome from admin when a user connects
-    socket.emit("newMessage",generateMessage("Admin","welcome to the chat app"));
-    //broadcast the welcome info
+    // // welcome from admin when a user connects
+    // socket.emit("newMessage",generateMessage("Admin","welcome to the chat app"));
+    // //broadcast the welcome info
 
     socket.broadcast.emit("newMessage",generateMessage("Admin","new user joined"));
 
+    socket.on("join", (params, callback) =>{
+        if (!isRealString(params.name) || !isRealString(params.room)){
+            callback("Name and room name are required");
+        }
+        
+        socket.join(params.room);
+        socket.emit("newMessage", generateMessage("Admin","Welcome to the chat app"));
+        socket.broadcast.to(params.room).emit("newMessage",generateMessage("Admin", `${params.name} has joined`));
+
+
+        callback();
+    });
     socket.on("disconnect",()=>{
         console.log("User was disconnected!");
     });
