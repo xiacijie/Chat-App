@@ -3,9 +3,9 @@ const express = require("express");
 const http = require("http");
 
 const socketIO = require("socket.io");
-const publicPath = path.join(__dirname  ,"../public");
+// const publicPath = path.join(__dirname  ,"../public");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const {generateMessage,generateLocationMessage} = require("./utils/message");
 const app = express();
 const server = http.createServer(app);
@@ -15,12 +15,7 @@ const {Users} = require("./utils/users");
 const users = new Users();
 
 io.on("connection", (socket)=>{
-    // console.log("New uer connected");
 
-    // // welcome from admin when a user connects
-    // socket.emit("newMessage",generateMessage("Admin","welcome to the chat app"));
-    // //broadcast the welcome info
- 
 
     socket.on("join", (params, callback) =>{
         if (!isRealString(params.name) || !isRealString(params.room)){
@@ -70,7 +65,7 @@ io.on("connection", (socket)=>{
 
 
 
-app.use(express.static(publicPath));
+// app.use(express.static(publicPath));
 
 server.listen(port ,()=>{
     console.log("Server starts!");
