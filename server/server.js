@@ -3,9 +3,9 @@ const express = require("express");
 const http = require("http");
 
 const socketIO = require("socket.io");
-// const publicPath = path.join(__dirname  ,"../public");
+const publicPath = path.join(__dirname  ,"../dist");
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const {generateMessage,generateLocationMessage} = require("./utils/message");
 const app = express();
 const server = http.createServer(app);
@@ -65,7 +65,7 @@ io.on("connection", (socket)=>{
 
 
 
-// app.use(express.static(publicPath));
+app.use(express.static(publicPath));
 
 server.listen(port ,()=>{
     console.log("Server starts!");
